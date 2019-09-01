@@ -25,9 +25,12 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=toor
-      - MYSQL_DATABASE=beejee_test
+      MYSQL_DATABASE: 'test_beejee'
+      MYSQL_USER: 'test'
+      MYSQL_PASSWORD: 'test'
+      MYSQL_ROOT_PASSWORD: 'toor'
     volumes:
       - db_data:/var/lib/mysql
+
 volumes:
     db_data:

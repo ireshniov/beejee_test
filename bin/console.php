@@ -47,7 +47,7 @@ $dotenv = new Dotenv();
 $dotenv->load( __DIR__. '/../.env');
 
 /** @var ContainerBuilder $container */
-$container = include __DIR__. '/../config/container.php';
+$container = include __DIR__ . '/../config/container/container.php';
 require_once __DIR__ .'/../config/services.php';
 require_once __DIR__ .'/../config/parameters.php';
 
@@ -58,13 +58,13 @@ try {
 }
 
 $migrationConfiguration = new Configuration($entityManager->getConnection());
-$migrationConfiguration->setName($container->getParameter('migrations_name'));
-$migrationConfiguration->setMigrationsNamespace($container->getParameter('migrations_namespace'));
-$migrationConfiguration->setMigrationsTableName($container->getParameter('migrations_table_name'));
-$migrationConfiguration->setMigrationsColumnLength($container->getParameter('migrations_column_length'));
-$migrationConfiguration->setMigrationsDirectory($container->getParameter('migrations_dir'));
-$migrationConfiguration->setAllOrNothing($container->getParameter('migrations_set_all_or_nothing'));
-$migrationConfiguration->setCheckDatabasePlatform($container->getParameter('migrations_check_database_platform'));
+$migrationConfiguration->setName($container->getParameter('migrations.name'));
+$migrationConfiguration->setMigrationsNamespace($container->getParameter('migrations.namespace'));
+$migrationConfiguration->setMigrationsTableName($container->getParameter('migrations.table_name'));
+$migrationConfiguration->setMigrationsColumnLength($container->getParameter('migrations.column_length'));
+$migrationConfiguration->setMigrationsDirectory($container->getParameter('migrations.dir'));
+$migrationConfiguration->setAllOrNothing($container->getParameter('migrations.set_all_or_nothing'));
+$migrationConfiguration->setCheckDatabasePlatform($container->getParameter('migrations.check_database_platform'));
 
 $configurationHelper = new ConfigurationHelper($entityManager->getConnection(), $migrationConfiguration);
 

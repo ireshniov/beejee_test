@@ -5,6 +5,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/../.env');
@@ -16,6 +17,13 @@ require_once __DIR__ .'/../config/parameters.php';
 
 $request = Request::createFromGlobals();
 
-$response = $container->get('framework.cache')->handle($request);
+try {
+    /** @var HttpCache $framework */
+    $framework = $container->get('framework.cache');
 
-$response->send();
+    $response = $framework->handle($request);
+
+    $response->send();
+} catch (Exception $exception)
+{
+}

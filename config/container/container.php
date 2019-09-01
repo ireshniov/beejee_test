@@ -44,10 +44,17 @@ $containerBuilder->register('listener.exception', HttpKernel\EventListener\Excep
     ->setArguments(['error_controller:exception'])
 ;
 
+$containerBuilder->register('session', HttpFoundation\Session\Session::class);
+
+$containerBuilder->register('listener.session', HttpKernel\EventListener\SessionListener::class)
+    ->addArgument(new Reference('service_container'))
+;
+
 $containerBuilder->register('dispatcher', EventDispatcher\EventDispatcher::class)
     ->addMethodCall('addSubscriber', [new Reference('listener.router')])
     ->addMethodCall('addSubscriber', [new Reference('listener.response')])
     ->addMethodCall('addSubscriber', [new Reference('listener.exception')])
+    ->addMethodCall('addSubscriber', [new Reference('listener.session')])
 ;
 
 $containerBuilder->register('framework', HttpKernel\HttpKernel::class)

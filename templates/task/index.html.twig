@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task list{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% include 'task/_pagination.html.twig' with {'currentPage': currentPage, 'pageCount': pageCount} only %}
+
+{#        app.request.query.all#}
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>
+                        <span>Username</span>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                Sort <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('task.list', app.request.query.all|merge({'sort_by': 'username', 'sort_direction': 'ASC'})) }}">ASC</a></li>
+                                <li><a href="{{ path('task.list', app.request.query.all|merge({'sort_by': 'username', 'sort_direction': 'DESC'})) }}">DESC</a></li>
+                            </ul>
+                        </div>
+                    </th>
+                    <th>
+                        <span>Email</span>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                Sort <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('task.list', app.request.query.all|merge({'sort_by': 'email', 'sort_direction': 'ASC'})) }}">ASC</a></li>
+                                <li><a href="{{ path('task.list', app.request.query.all|merge({'sort_by': 'email', 'sort_direction': 'DESC'})) }}">DESC</a></li>
+                            </ul>
+                        </div>
+                    </th>
+                    <th>
+                        <span>Is task completed</span>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                Sort <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('task.list', app.request.query.all|merge({'sort_by': 'is_completed', 'sort_direction': 'ASC'})) }}">ASC</a></li>
+                                <li><a href="{{ path('task.list', app.request.query.all|merge({'sort_by': 'is_completed', 'sort_direction': 'DESC'})) }}">DESC</a></li>
+                            </ul>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        <tr>
+                            <td>{{ task.id }}</td>
+                            <td>{{ task.username }}</td>
+                            <td>{{ task.email }}</td>
+                            <td>
+                                {% if task.isCompleted == true %}
+                                    true
+                                {% else %}
+                                    false
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% include 'task/_pagination.html.twig' with {'currentPage': currentPage, 'pageCount': pageCount} only %}
+    </div>
+{% endblock %}

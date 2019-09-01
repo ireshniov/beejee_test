@@ -7,9 +7,11 @@ $container->setParameter('locale', getenv('LOCALE'));
 
 $container->setParameter('translator.dir', __DIR__ . '/../translations');
 
+$container->setParameter('task.items_per_page', getenv('TASK_ITEMS_PER_PAGE'));
+
 $container->setParameter('twig.cache_dir', __DIR__ . '/../var/cache/twig');
 $container->setParameter('twig.template_dir', __DIR__ . '/../templates');
-$container->setParameter('twig.default_form_theme', 'bootstrap_4_layout.html.twig');
+$container->setParameter('twig.default_form_theme', 'bootstrap_3_horizontal_layout.html.twig');
 
 $container->setParameter('doctrine.orm.auto_generate_proxies', getenv('DOCTRINE_AUTO_GENERATE_PROXIES'));
 $container->setParameter('doctrine.orm.proxy_dir', __DIR__ . '/../var/cache/proxies');

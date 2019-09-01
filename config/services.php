@@ -2,6 +2,7 @@
 
 use App\Controller\ErrorController;
 use App\Controller\IndexController;
+use App\Controller\TaskController;
 use App\EventListener\ContentLengthListener;
 use App\EventListener\StringResponseListener;
 use Symfony\Component\DependencyInjection\Reference;
@@ -23,5 +24,9 @@ $container->register('error_controller', ErrorController::class)
 ;
 
 $container->register('index_controller', IndexController::class)
+    ->addMethodCall('setContainer', [new Reference('service_container')])
+;
+
+$container->register('task_controller', TaskController::class)
     ->addMethodCall('setContainer', [new Reference('service_container')])
 ;

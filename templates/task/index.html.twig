@@ -2,11 +2,11 @@
 
 {% block title %}Task list{% endblock %}
 
+{% block h1 %}Task list{% endblock %}
+
 {% block body %}
     <div class="container">
         {% include 'task/_pagination.html.twig' with {'currentPage': currentPage, 'pageCount': pageCount} only %}
-
-{#        app.request.query.all#}
 
         <div class="table-responsive">
             <table class="table">

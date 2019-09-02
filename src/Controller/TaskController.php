@@ -54,10 +54,6 @@ class TaskController implements ContainerAwareInterface
         //TODO implement paginator logic in service;
         $paginator = $taskRepository->getPaginator($page, $itemsPerPage, $sortBy, $sortDirection);
 
-        if ($paginator->getIterator()->count() == 0){
-            throw new NotFoundException();
-        }
-
         $pageCount = ceil($paginator->count()/$itemsPerPage);
 
         /** @var Environment $twigEnvironment */

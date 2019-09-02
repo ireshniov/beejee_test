@@ -72,6 +72,95 @@ class TaskController implements ContainerAwareInterface
     }
 
     /**
+     * @param int $id
+     * @param Request $request
+     * @return string|RedirectResponse
+     * @throws LoaderError
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function update(int $id, Request $request)
+    {
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->container->get('entity_manager');
+
+        /** @var TaskRepository $taskRepository */
+        $taskRepository = $entityManager->getRepository(Task::class);
+
+        $task = $taskRepository->find($id);
+
+        if (!$task instanceof Task) {
+            throw new NotFoundException();
+        }
+
+        /** @var UrlGenerator $urlGenerator */
+        $urlGenerator = $this->container->get('url_generator');
+
+        $url = $urlGenerator->generate('task.list');
+
+        $response = new RedirectResponse($url);
+
+        if ($task->isCompleted()) {
+            return $response;
+        }
+
+        /** @var FormFactory $formFactory */
+        $formFactory = $this->container->get('form_factory');
+
+        $form = $formFactory->createBuilder(TaskType::class, $task)->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $response;
+        }
+
+        /** @var Environment $twigEnvironment */
+        $twigEnvironment = $this->container->get('twig');
+
+        return $twigEnvironment->render('task/update.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function complete(int $id, Request $request)
+    {
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->container->get('entity_manager');
+
+        /** @var TaskRepository $taskRepository */
+        $taskRepository = $entityManager->getRepository(Task::class);
+
+        $task = $taskRepository->find($id);
+
+        if (!$task instanceof Task) {
+            throw new NotFoundException();
+        }
+
+        $response = new RedirectResponse($request->headers->get('referer'));
+
+        if ($task->isCompleted()) {
+            return $response;
+        }
+
+        $task->setIsCompleted(true);
+
+        $entityManager->flush();
+
+        return $response;
+    }
+
+    /**
      * @param Request $request
      * @return string|RedirectResponse
      * @throws LoaderError
@@ -82,7 +171,6 @@ class TaskController implements ContainerAwareInterface
      */
     public function create(Request $request)
     {
-        // just setup a fresh $task object (remove the example data)
         $task = new Task();
 
         /** @var FormFactory $formFactory */
@@ -107,9 +195,7 @@ class TaskController implements ContainerAwareInterface
             /** @var UrlGenerator $urlGenerator */
             $urlGenerator = $this->container->get('url_generator');
 
-            $url = $urlGenerator->generate('task.list', [
-                'page' => 1
-            ]);
+            $url = $urlGenerator->generate('task.list');
 
             /** @var Session $session */
             $session = $request->getSession();

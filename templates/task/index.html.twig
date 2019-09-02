@@ -36,6 +36,9 @@
                         </div>
                     </th>
                     <th>
+                        <span>Description</span>
+                    </th>
+                    <th>
                         <span>Is task completed</span>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -46,6 +49,9 @@
                             </ul>
                         </div>
                     </th>
+                    <th>
+                        <span>Actions</span>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,12 +60,21 @@
                             <td>{{ task.id }}</td>
                             <td>{{ task.username }}</td>
                             <td>{{ task.email }}</td>
+                            <td>{{ task.description }}</td>
                             <td>
                                 {% if task.isCompleted == true %}
                                     true
                                 {% else %}
                                     false
                                 {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    {% if task.isCompleted == false %}
+                                    <a type="button" class="btn btn-default" href="{{ path('task.update', {'id': task.id}) }}">Update</a>
+                                    <a type="button" class="btn btn-default" href="{{ path('task.complete', {'id': task.id}) }}">Check as completed</a>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}

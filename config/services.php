@@ -2,6 +2,7 @@
 
 use App\Controller\ErrorController;
 use App\Controller\IndexController;
+use App\Controller\SecurityController;
 use App\Controller\TaskController;
 use App\EventListener\ContentLengthListener;
 use App\EventListener\StringResponseListener;
@@ -28,5 +29,9 @@ $container->register('index_controller', IndexController::class)
 ;
 
 $container->register('task_controller', TaskController::class)
+    ->addMethodCall('setContainer', [new Reference('service_container')])
+;
+
+$container->register('security_controller', SecurityController::class)
     ->addMethodCall('setContainer', [new Reference('service_container')])
 ;

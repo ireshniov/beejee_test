@@ -81,9 +81,10 @@ $helperSet->set($configurationHelper, 'configuration');
 $helperSet->set($entityManagerHelper, 'em');
 
 $cli = new Application(
-    getenv('SERVICE_NAME'),
-    getenv('SERVICE_VERSION')
+    $container->getParameter('service.name'),
+    $container->getParameter('service.version')
 );
+
 $cli->setCatchExceptions(true);
 
 $cli->setHelperSet($helperSet);

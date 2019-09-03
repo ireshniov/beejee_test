@@ -3,6 +3,7 @@
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Bridge\Twig\Extension\SecurityExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\DependencyInjection\Reference;
@@ -25,6 +26,7 @@ $containerBuilder->register('twig.loader', FilesystemLoader::class)
 ;
 
 $containerBuilder->register('app', AppVariable::class)
+    ->addMethodCall('setTokenStorage', [new Reference('token_storage')])
     ->addMethodCall('setRequestStack', [new Reference('request_stack')])
 ;
 
@@ -40,7 +42,7 @@ $containerBuilder->register('twig', Environment::class)
             $formEngine = $containerBuilder->get('twig.renderer_engine');
 
             /** @var CsrfTokenManager $csrfManager */
-            $csrfManager = $containerBuilder->get('csrf.token_manager');
+            $csrfManager = $containerBuilder->get('csrf_token_manager');
 
             return new FormRenderer($formEngine, $csrfManager);
         },
@@ -48,6 +50,7 @@ $containerBuilder->register('twig', Environment::class)
     ->addMethodCall('addExtension', [new FormExtension()])
     ->addMethodCall('addExtension', [new Reference('twig.extension.translation')])
     ->addMethodCall('addExtension', [new Reference('twig.extention.routing')])
+    ->addMethodCall('addExtension', [new Reference('twig.extention.security')])
 ;
 
 $containerBuilder->register('twig.renderer_engine', TwigRendererEngine::class)
@@ -63,4 +66,8 @@ $containerBuilder->register('twig.extension.translation', TranslationExtension::
 
 $containerBuilder->register('twig.extention.routing', RoutingExtension::class)
     ->addArgument(new Reference('url_generator'))
+;
+
+$containerBuilder->register('twig.extention.security', SecurityExtension::class)
+    ->addArgument(new Reference('authorization_checker'))
 ;

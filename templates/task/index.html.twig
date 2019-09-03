@@ -71,8 +71,10 @@
                             <td>
                                 <div class="btn-group">
                                     {% if task.isCompleted == false %}
-                                    <a type="button" class="btn btn-default" href="{{ path('task.update', {'id': task.id}) }}">Update</a>
-                                    <a type="button" class="btn btn-default" href="{{ path('task.complete', {'id': task.id}) }}">Check as completed</a>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <a type="button" class="btn btn-default" href="{{ path('task.update', {'id': task.id}) }}">Update</a>
+                                            <a type="button" class="btn btn-default" href="{{ path('task.complete', {'id': task.id}) }}">Check as completed</a>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </td>

@@ -20,7 +20,7 @@ $containerBuilder->register('form_factory', FormFactory::class)
 ;
 
 $containerBuilder->register('form.extention.csrf', CsrfExtension::class)
-    ->addArgument(new Reference('csrf.token_manager'))
+    ->addArgument(new Reference('csrf_token_manager'))
 ;
 
 $containerBuilder->register('form.extention.validator', ValidatorExtension::class)

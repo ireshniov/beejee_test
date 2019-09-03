@@ -1,5 +1,10 @@
 <?php
 
+$container->setParameter('service.name', getenv('SERVICE_NAME'));
+$container->setParameter('service.version', getenv('SERVICE_VERSION'));
+
+$container->setParameter('logger.dir', __DIR__ . '/../var/log');
+
 $container->setParameter('charset', getenv('CHARSET'));
 $container->setParameter('cache.dir', __DIR__ . '/../var/cache');
 

@@ -17,13 +17,9 @@ require_once __DIR__ .'/../config/parameters.php';
 
 $request = Request::createFromGlobals();
 
-try {
-    /** @var HttpCache $framework */
-    $framework = $container->get('framework.cache');
+/** @var HttpCache $framework */
+$framework = $container->get('framework.cache');
 
-    $response = $framework->handle($request);
+$response = $framework->handle($request);
 
-    $response->send();
-} catch (Exception $exception)
-{
-}
+$response->send();

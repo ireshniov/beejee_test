@@ -25,4 +25,8 @@ $routes->add('task.list', new Routing\Route('/tasks', [
     '_controller' => 'task_controller:index'
 ], [], [], '', [], ['GET']));
 
+$routes->add('app_login', new Routing\Route('/login', [
+    '_controller' => 'security_controller:login'
+], [], [], '', [], ['GET', 'POST']));
+
 return $routes;

@@ -35,4 +35,8 @@ class SecurityController implements ContainerAwareInterface
             'error' => $error
         ]);
     }
+
+    public function logout()
+    {
+    }
 }

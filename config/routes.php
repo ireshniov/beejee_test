@@ -29,4 +29,8 @@ $routes->add('app_login', new Routing\Route('/login', [
     '_controller' => 'security_controller:login'
 ], [], [], '', [], ['GET', 'POST']));
 
+$routes->add('app_logout', new Routing\Route('/logout', [
+    '_controller' => 'security_controller:logout'
+], [], [], '', [], ['GET', 'POST']));
+
 return $routes;

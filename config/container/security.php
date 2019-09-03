@@ -25,7 +25,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Http\Firewall\ContextListener;
 use Symfony\Component\Security\Http\Firewall\ExceptionListener;
+use Symfony\Component\Security\Http\Firewall\LogoutListener;
 use Symfony\Component\Security\Http\FirewallMap;
+use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy;
 
 //TODO access manager
@@ -36,12 +38,13 @@ $containerBuilder->register('firewall', Firewall::class)
 $containerBuilder
     ->register('firewall.map', FirewallMap::class)
     ->addMethodCall('add', [
-        new RequestMatcher('^/'),
+        null,/*new RequestMatcher('^/'),*/
         [
             new Reference('firewall.context_listener'),
             new Reference('firewall.guard_authentication_listener'),
         ],
-        new Reference('firewall.exception_listener')
+        new Reference('firewall.exception_listener'),
+        new Reference('firewall.logout_listener'),
     ])
 ;
 
@@ -113,6 +116,21 @@ $containerBuilder->register('guard_authenticator_provider', GuardAuthenticationP
         new Reference('user_provider.in_memory'),
         'main',
         new Reference('user_checker'),
+    ])
+;
+
+$containerBuilder->register('logout_success_handler.default', DefaultLogoutSuccessHandler::class)
+    ->setArguments([
+        new Reference('http_utils'),
+        '/tasks',
+    ])
+;
+
+$containerBuilder->register('firewall.logout_listener', LogoutListener::class)
+    ->setArguments([
+        new Reference('token_storage'),
+        new Reference('http_utils'),
+        new Reference('logout_success_handler.default')
     ])
 ;
 

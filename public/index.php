@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 
 $dotenv = new Dotenv();
-$dotenv->load(__DIR__.'/../.env');
+$dotenv->load(__DIR__.'/../.env.local');
 
 /** @var ContainerBuilder $container */
 $container = include __DIR__ . '/../config/container/container.php';

@@ -44,7 +44,7 @@ set_time_limit(0);
 require __DIR__. '/../vendor/autoload.php';
 
 $dotenv = new Dotenv();
-$dotenv->load( __DIR__. '/../.env');
+$dotenv->load( __DIR__. '/../.env.local');
 
 /** @var ContainerBuilder $container */
 $container = include __DIR__ . '/../config/container/container.php';

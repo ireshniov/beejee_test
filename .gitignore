@@ -1,7 +1,7 @@
 .idea/
 vendor/
 var/
-.env
+.env.local
 
 .phpunit
 .phpunit.result.cache

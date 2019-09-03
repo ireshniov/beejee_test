@@ -7,7 +7,7 @@ docker-compose up -d
 docker-compose exec php composer install
 ```
 ```
-cp .env.dist .env; fill variables in .env file;
+cp .env.dist .env.local; fill variables in .env.local file;
 ```
 
 ```

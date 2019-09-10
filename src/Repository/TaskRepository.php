@@ -31,9 +31,9 @@ class TaskRepository extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder(self::TABLE_ALIAS);
 
-        $queryBuilder
-            ->orderBy($this->sortingMap[$sortBy], $sortDirection)
-        ;
+        if (isset($this->sortingMap[$sortBy])) {
+            $queryBuilder->orderBy($this->sortingMap[$sortBy], $sortDirection);
+        }
 
         $firstItemIndex = $page * $itemsPerPage - $itemsPerPage;
 

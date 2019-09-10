@@ -79,8 +79,6 @@ class TaskController implements ContainerAwareInterface
      */
     public function update(int $id, Request $request)
     {
-        //TODO access manager
-
         /** @var EntityManager $entityManager */
         $entityManager = $this->container->get('entity_manager');
 
@@ -133,8 +131,6 @@ class TaskController implements ContainerAwareInterface
      */
     public function complete(int $id, Request $request)
     {
-        //TODO access manager
-
         /** @var EntityManager $entityManager */
         $entityManager = $this->container->get('entity_manager');
 
@@ -147,7 +143,14 @@ class TaskController implements ContainerAwareInterface
             throw new NotFoundException();
         }
 
-        $response = new RedirectResponse($request->headers->get('referer'));
+        /** @var UrlGenerator $urlGenerator */
+        $urlGenerator = $this->container->get('url_generator');
+
+        $redirectUrl = $request->headers->get('referer')?
+            $request->headers->get('referer'): $urlGenerator->generate('task.list');
+
+
+        $response = new RedirectResponse($redirectUrl);
 
         if ($task->isCompleted()) {
             return $response;
@@ -176,9 +179,6 @@ class TaskController implements ContainerAwareInterface
         /** @var FormFactory $formFactory */
         $formFactory = $this->container->get('form_factory');
 
-        //TODO: http://qaru.site/questions/16107869/symfony-form-failed-to-start-the-session-already-started-by-php
-        // https://symfony.com/doc/current/components/http_foundation/session_php_bridge.html
-        // https://symfony.com/doc/current/session/php_bridge.html
         $form = $formFactory->createBuilder(TaskType::class, $task)->getForm();
 
         $form->handleRequest($request);

@@ -2,6 +2,7 @@
 
 $container->setParameter('service.name', getenv('SERVICE_NAME'));
 $container->setParameter('service.version', getenv('SERVICE_VERSION'));
+$container->setParameter('service.secret', getenv('SERVICE_SECRET'));
 
 $container->setParameter('logger.dir', __DIR__ . '/../var/log');
 

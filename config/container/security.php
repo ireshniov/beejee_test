@@ -165,6 +165,7 @@ $containerBuilder->register('access_decision_manager', AccessDecisionManager::cl
     ])
 ;
 
+//TODO ADD expression access rule { path: ^/login$, allow_if: "not has_role('ROLE_ADMIN')" }
 $containerBuilder->register('access_map', AccessMap::class)
     ->addMethodCall('add', [
         new RequestMatcher('^/tasks$'),
